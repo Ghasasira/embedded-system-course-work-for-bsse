@@ -50,7 +50,7 @@ void lcd_clear()
 
 void lcd_data(unsigned char data)
 {
-	latch();
+	//latch();
 	PORTB |= (1 << rs);
 	_delay_ms(5);
 	PORTB &= ~(1 << rw);
@@ -63,7 +63,7 @@ void lcd_string(const char str[])
 	for(int i=0;str[i]!='\0';i++){
 	//while (*str) {
 		lcd_data(str[i]);
-		_delay_ms(10);
+		_delay_ms(100);
 		//str++;
 	}
 }

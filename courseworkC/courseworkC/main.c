@@ -13,6 +13,13 @@
 #include "fridge.h"
 #include "gate.h"
 #include "virtualMonitor.h"
+#include "manageEEPROM.h"
+#include "global.h"
+/*
+extern int maxPeople;
+extern int pricePerBottle;
+extern int PWD;
+*/
 
 
 
@@ -41,33 +48,34 @@ ISR(INT1_vect){
 
 int main(void)
 {
-	DDRF=0xff;
-	DDRH=0xff;
-	DDRD=0x0;
+	DDRF = 0xff;
+	DDRH = 0xff;
+	DDRD = 0x0;
 	DDRA = 0xff;  // Data lines as output
 	DDRB = 0xff;  // Control lines as output
 	
-	DDRJ=0b00001111;
-	DDRK=0xff;
-	DDRC=0xff;
+	DDRJ = 0b00001111;
+	DDRK = 0xff;
+	DDRC = 0xff;
 	
 	sei();
 	EIMSK|=(1<<INT0)|(1<<INT1);
 	EICRA|=(1<<ISC01)|(1<<ISC11);	
 	
-	PORTJ=0xff;
+	PORTJ = 0xff;
 	
 	//PORTA = 0x0;
 	//PORTB = 0x0;
-	PORTK=0x0;
-	PORTD=0x0;
-	PORTC=0x00;
+	PORTK = 0x0;
+	PORTD = 0x0;
+	PORTC = 0x00;
 	
 	
 	lcd_init();
 	fridge_lcd_init();
 	//lcd_data('w');
 	UART_init();
+	_delay_ms(50);
 	intro_text();
 	//transmit_char('1');
 	lcd_string("hey");
@@ -97,6 +105,19 @@ int main(void)
 	/* Replace with your application code */
 	while (1)
 	{
+		EECR = 0;
+		
+		// Set the password to 'pass'
+		write_string_to_eeprom(PWD, "pass");
+
+		// Set pricePerBottle to 1500
+		write_data(pricePerBottle, 1500);
+
+		// Set maxPeople to 130
+		write_data(maxPeople, 130);
+
+		
+		listen_to_uart();
 		//lcd_string("hey");
 		//intro_text();
 		keypad();

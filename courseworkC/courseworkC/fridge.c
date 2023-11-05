@@ -74,7 +74,7 @@ void fridge_lcd_cmd(unsigned char cmd){
 }
 
 void fridge_lcd_data(unsigned char data){
-	fridge_latch();
+	//fridge_latch();
 	PORTF |= (1 << rs);
 	_delay_ms(5);
 	PORTF &= ~(1 << rw);
@@ -134,6 +134,9 @@ void keypad(){
 			//rotate(5);
 		}else if ((PINJ&(1<<6))==0)
 		{
+			_delay_ms(100);
+			fridge_lcd_data('a');
+			_delay_ms(100);
 			//=
 			//rotate(8);
 		}

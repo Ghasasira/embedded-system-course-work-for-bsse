@@ -14,6 +14,7 @@ void UART_init();
 void transmit_char(char data);
 char receive_char();
 void intro_text();
-
-
+void listen_to_uart();
+void clear_terminal();
+void transmit_string(const char *str);
 #endif /* VIRTUALMONITOR_H_ */
